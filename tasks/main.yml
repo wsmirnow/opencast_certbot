@@ -47,3 +47,4 @@
       dest: '{{ inventory_hostname }}.crt'
     - src: '{{ inventory_hostname }}/privkey.pem'
       dest: '{{ inventory_hostname }}.key'
+  notify: reload nginx
