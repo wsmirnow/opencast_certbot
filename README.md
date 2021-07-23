@@ -13,7 +13,7 @@ Role Variables
 Dependencies
 ------------
 
-This role requires `lkiesow.opencast_nginx`.
+This role requires `elan.opencast_nginx`.
 
 
 Example Playbook
@@ -25,6 +25,6 @@ Example of how to configure and use the role:
 - hosts: servers
   become: true
   roles:
-    - role: lkiesow.opencast_certbot
+    - role: elan.opencast_certbot
       opencast_letsencrypt_email: admin@example.com
 ```
