@@ -34,7 +34,6 @@
       -a webroot
       --webroot-path /var/lib/nginx/
       --agree-tos
-      --staging
       -m {{ opencast_letsencrypt_email }}
       certonly
       --domains {{ inventory_hostname }}
@@ -52,3 +51,4 @@
     - src: '{{ inventory_hostname }}/privkey.pem'
       dest: '{{ inventory_hostname }}.key'
   notify: reload nginx
+
