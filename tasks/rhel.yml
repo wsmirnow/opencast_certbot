@@ -1,0 +1,9 @@
+---
+
+- name: activate epel repository
+  dnf:
+    name: epel-release
+
+- name: install certbot
+  dnf:
+    name: certbot

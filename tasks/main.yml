@@ -1,12 +1,10 @@
 ---
 
-- name: activate epel repository
-  dnf:
-    name: epel-release
+- include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: install certbot
-  dnf:
-    name: certbot
+- include_tasks: rhel.yml
+  when: ansible_os_family == 'RedHat'
 
 - name: install certbot services
   template:
@@ -24,6 +22,11 @@
     state: started
     enabled: true
 
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: restarted
+
 - name: generate initial certificate
   shell:
     cmd: >
@@ -31,6 +34,7 @@
       -a webroot
       --webroot-path /var/lib/nginx/
       --agree-tos
+      --staging
       -m {{ opencast_letsencrypt_email }}
       certonly
       --domains {{ inventory_hostname }}
