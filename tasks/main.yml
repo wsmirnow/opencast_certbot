@@ -1,9 +1,20 @@
 ---
 
-- include_tasks: debian.yml
+- name: install certbot packages for Debian
+  package:
+    name: certbot
+    state: present
   when: ansible_os_family == 'Debian'
 
-- include_tasks: rhel.yml
+- name: install certbot packages for RedHat
+  block:
+    - name: activate epel repository
+      dnf:
+        name: epel-release
+
+    - name: install certbot
+      dnf:
+        name: certbot
   when: ansible_os_family == 'RedHat'
 
 - name: install certbot services
@@ -21,11 +32,6 @@
     name: certbot-renew.timer
     state: started
     enabled: true
-
-- name: Ensure Nginx is running
-  service:
-    name: nginx
-    state: restarted
 
 - name: generate initial certificate
   shell:
@@ -51,4 +57,3 @@
     - src: '{{ inventory_hostname }}/privkey.pem'
       dest: '{{ inventory_hostname }}.key'
   notify: reload nginx
-
