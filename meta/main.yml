@@ -16,8 +16,9 @@ galaxy_info:
         - 9
     - name: Debian
       versions:
-        - 10
-        - 11
-        - 12
+        - all
+    - name: Ubuntu
+      versions:
+        - all
 dependencies:
   - elan.opencast_nginx
