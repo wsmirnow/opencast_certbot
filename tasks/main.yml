@@ -1,24 +1,15 @@
 ---
-
-- name: install certbot packages for Debian
-  package:
-    name: certbot
-    state: present
-  when: ansible_os_family == 'Debian'
-
-- name: install certbot packages for RedHat
-  block:
-    - name: activate epel repository
-      dnf:
-        name: epel-release
-
-    - name: install certbot
-      dnf:
-        name: certbot
+- name: activate epel repository on RedHat systems
+  ansible.builtin.package:
+    name: epel-release
   when: ansible_os_family == 'RedHat'
 
+- name: install certbot package
+  ansible.builtin.package:
+    name: certbot
+
 - name: install certbot services
-  template:
+  ansible.builtin.template:
     src: '{{ item }}'
     dest: /etc/systemd/system/{{ item }}
     mode: '0644'
@@ -28,13 +19,13 @@
   notify: restart certbot
 
 - name: start certbot service
-  service:
+  ansible.builtin.service:
     name: certbot-renew.timer
     state: started
     enabled: true
 
 - name: generate initial certificate
-  shell:
+  ansible.builtin.shell:
     cmd: >
       certbot -n
       -a webroot
@@ -46,7 +37,7 @@
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
 
 - name: symlink certificates
-  file:
+  ansible.builtin.file:
     src: /etc/letsencrypt/live/{{ item.src }}
     dest: /etc/nginx/ssl/{{ item.dest }}
     state: link
