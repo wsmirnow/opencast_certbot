@@ -1,6 +1,6 @@
 ---
 
-- name: restart certbot
+- name: Restart certbot
   systemd:
     name: certbot-renew.timer
     state: restarted
