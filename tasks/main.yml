@@ -2,7 +2,7 @@
 
 - name: Check Let's Encrypt email address is set
   ansible.builtin.assert:
-    that: opencast_certbot_letsencrypt_email != None
+    that: opencast_certbot_letsencrypt_email | default(None) != None
     fail_msg: 'Please set opencast_certbot_letsencrypt_email!'
 
 - name: Activate epel repository on RedHat systems
@@ -45,7 +45,7 @@
       -m {{ opencast_certbot_letsencrypt_email }}
       certonly
       --domains {{ inventory_hostname }}
-      {%if opencast_certbot_deploy_hook != None %}--deploy-hook {{ opencast_certbot_deploy_hook }}{% endif %}
+      {%if opencast_certbot_deploy_hook | default(None) != None %}--deploy-hook "{{ opencast_certbot_deploy_hook }}"{% endif %}
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
 
 - name: Look for Nginx configuration directory

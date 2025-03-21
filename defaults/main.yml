@@ -1,4 +1,2 @@
 ---
-opencast_certbot_letsencrypt_email: None
-opencast_certbot_deploy_hook: None
 opencast_certbot_enable_epel: true
