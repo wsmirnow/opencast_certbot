@@ -8,15 +8,18 @@
   ansible.builtin.package:
     name: certbot
 
-- name: Install certbot services
-  ansible.builtin.template:
-    src: '{{ item }}'
-    dest: /etc/systemd/system/{{ item }}
-    mode: '0644'
+# This task should remove custom service definitions created by previous version of this role.
+# Certbot package come with a renew service definitions itself, why not using it?
+# It will renew all registred certificates by default and does not limit us on some domains.
+# You can remove this task on later versions.
+- name: Remove custom certbot services definition
+  ansible.builtin.file:
+    path: '/etc/systemd/system/{{ item }}'
+    state: absent
   loop:
     - certbot-renew.service
     - certbot-renew.timer
-  notify: Restart certbot
+  notify: Enable certbot
 
 - name: Start certbot service
   ansible.builtin.service:
