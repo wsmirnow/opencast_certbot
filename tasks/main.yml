@@ -39,15 +39,27 @@
       --domains {{ inventory_hostname }}
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
 
-- name: Symlink certificates
-  ansible.builtin.file:
-    src: /etc/letsencrypt/live/{{ item.src }}
-    dest: /etc/nginx/ssl/{{ item.dest }}
-    state: link
-    force: true
-  loop:
-    - src: '{{ inventory_hostname }}/fullchain.pem'
-      dest: '{{ inventory_hostname }}.crt'
-    - src: '{{ inventory_hostname }}/privkey.pem'
-      dest: '{{ inventory_hostname }}.key'
-  notify: reload nginx
+- name: Look for Nginx configuration directory
+  ansible.builtin.stat:
+    path: /etc/nginx/ssl
+  register: nginx_conf_dir
+
+- name: Install certificete in Nginx
+  when: nginx_conf_dir.stat.isdir
+  ansible.builtin.block:
+    - name: Symlink certificates
+      ansible.builtin.file:
+        src: /etc/letsencrypt/live/{{ item.src }}
+        dest: /etc/nginx/ssl/{{ item.dest }}
+        state: link
+        force: true
+      loop:
+        - src: '{{ inventory_hostname }}/fullchain.pem'
+          dest: '{{ inventory_hostname }}.crt'
+        - src: '{{ inventory_hostname }}/privkey.pem'
+          dest: '{{ inventory_hostname }}.key'
+
+    - name: Reload nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: reloaded
