@@ -19,5 +19,4 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-dependencies:
-  - elan.opencast_nginx
+dependencies: []
