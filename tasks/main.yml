@@ -54,8 +54,8 @@
   register: nginx_conf_dir
 
 - name: Install certificete in Nginx
-  when: nginx_conf_dir.stat.isdir
-  ansible.builtin.block:
+  when: nginx_conf_dir.stat.exists and nginx_conf_dir.stat.isdir
+  block:
     - name: Symlink certificates
       ansible.builtin.file:
         src: /etc/letsencrypt/live/{{ item.src }}
