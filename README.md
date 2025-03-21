@@ -8,7 +8,7 @@ This Ansible role configures TLS certificate renewal via certbot for Opencast.
 Role Variables
 --------------
 
-- `opencast_letsencrypt_email`
+- `opencast_certbot_letsencrypt_email`
   - Email address for Let's Encrypt account (_required_)
   - This is used by Let's Encrypt to send certificate expiration warnings if necessary.
 - `opencast_certbot_deploy_hook`
