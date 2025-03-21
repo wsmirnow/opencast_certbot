@@ -23,8 +23,10 @@ Role Variables
 Dependencies
 ------------
 
-This role requires `elan.opencast_nginx`.
-
+Certbot runs an ACME Webroot challenge to obtain a certificate. This requires a web server that
+exposes the path `/var/lib/nginx/` (especially the subdirectory `.well-known/acme-challenge`)
+over HTTP. This can be done using the Ansible role `elan.opencast_nginx` or others.
+The `elan.opencast_nginx` role is no longer a hard dependency.
 
 Example Playbook
 ----------------
@@ -35,6 +37,8 @@ Example of how to configure and use the role:
 - hosts: servers
   become: true
   roles:
+    - elan.opencast_nginx
     - role: elan.opencast_certbot
-      opencast_letsencrypt_email: admin@example.com
+      opencast_certbot_letsencrypt_email: admin@example.com
+      opencast_certbot_deploy_hook: /usr/bin/systemctl reload nginx
 ```
