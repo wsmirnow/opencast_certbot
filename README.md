@@ -14,6 +14,11 @@ Role Variables
 - `opencast_certbot_deploy_hook`
   - Command to run after certbot has updated certificate. The value is optional.
     Already created certificates will not be updated.
+- `opencast_certbot_enable_epel`
+  - On RedHat system certbot package is living in the EPEL repository. Here you can enable (value: `true`)
+    or disable (value: `false`) installation of the `epel-release` package (default: `true`).
+    On RedHat installation with Satellite this property can be handy.
+  - On Debian based systems this property do nothing.
 
 Dependencies
 ------------
