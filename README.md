@@ -1,6 +1,8 @@
 Ansible: Opencast Certbot Role
 ==============================
 
+[![lint](https://github.com/elan-ev/opencast_certbot/actions/workflows/lint.yml/badge.svg)](https://github.com/elan-ev/opencast_certbot/actions/workflows/lint.yml)
+
 This Ansible role configures TLS certificate renewal via certbot for Opencast.
 
 Role Variables
