@@ -28,8 +28,8 @@
     enabled: true
 
 - name: Generate initial certificate
-  ansible.builtin.shell:
-    cmd: >
+  ansible.builtin.command:
+    cmd: >-
       certbot -n
       -a webroot
       --webroot-path /var/lib/nginx/
@@ -37,6 +37,7 @@
       -m {{ opencast_letsencrypt_email }}
       certonly
       --domains {{ inventory_hostname }}
+      {%if opencast_certbot_deploy_hook | default(None) != None %}--deploy-hook {{ opencast_certbot_deploy_hook }}{% endif %}
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
 
 - name: Look for Nginx configuration directory
